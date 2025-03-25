@@ -31,7 +31,9 @@ export default function TerminalPage() {
       const token = await getToken();
 
       // Make the request to your FastAPI backend
-      const response = await fetch("http://localhost:8000/api/connections/", {
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${backendUrl}/api/connections`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
