@@ -1,103 +1,152 @@
-import Image from "next/image";
+"use client";
+// src/app/page.tsx
+import Link from "next/link";
+import { Database, Code, Sparkles, MessageSquare } from "lucide-react";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    if (isLoaded && user) {
+      router.push("/terminal");
+    }
+  }, [user, isLoaded, router]);
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black font-mono overflow-y-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        {/* Header */}
+        <header className="py-6 flex justify-between items-center">
+          <div className="flex items-center">
+            <span className="text-green-500 text-xl font-bold">THEO</span>
+            <span className="text-gray-300 ml-2 text-sm">v1.0.0</span>
+          </div>
+          <div className="space-x-4 flex gap-2 items-center">
+            {user && <div className="text-gray-300">{user?.firstName}</div>}
+            {user ? (
+              <SignOutButton>
+                <div className="text-gray-300 hover:text-green-500 transition cursor-pointer">
+                  Sign Out
+                </div>
+              </SignOutButton>
+            ) : (
+              <SignInButton>
+                <div className="text-gray-300 hover:text-green-500 transition cursor-pointer">
+                  Sign In
+                </div>
+              </SignInButton>
+            )}
+            {!user && (
+              <SignInButton>
+                <div className="bg-green-500 hover:bg-green-400 text-black px-4 py-2 rounded-md transition cursor-pointer">
+                  Sign Up
+                </div>
+              </SignInButton>
+            )}
+          </div>
+        </header>
+
+        {/* Hero Section */}
+        <div className="mt-16 md:mt-24 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+            Meet <span className="text-green-500">THEO</span>
+          </h1>
+          <p className="mt-6 text-lg text-gray-300 max-w-3xl mx-auto">
+            Your AI SQL agent that translates natural language into powerful
+            database queries.
+          </p>
+          <div className="mt-10 flex justify-center">
+            <div className="mt-4">
+              <SignInButton>
+                <div className="inline-flex items-center bg-green-500 hover:bg-green-400 text-black font-medium px-6 py-3 rounded-md transition cursor-pointer">
+                  <Sparkles className="mr-2 h-5 w-5" /> Start Using THEO
+                </div>
+              </SignInButton>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {/* Features */}
+        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700">
+            <div className="text-green-500 mb-4">
+              <Database className="h-8 w-8" />
+            </div>
+            <h3 className="text-xl font-medium text-white mb-2">
+              Connect Any Database
+            </h3>
+            <p className="text-gray-400">
+              Connect THEO to your PostgreSQL database and start querying in
+              natural language immediately.
+            </p>
+          </div>
+
+          <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700">
+            <div className="text-green-500 mb-4">
+              <Code className="h-8 w-8" />
+            </div>
+            <h3 className="text-xl font-medium text-white mb-2">Perfect SQL</h3>
+            <p className="text-gray-400">
+              THEO writes optimized SQL queries with proper JOINs, indexes, and
+              performance considerations.
+            </p>
+          </div>
+
+          <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700">
+            <div className="text-green-500 mb-4">
+              <MessageSquare className="h-8 w-8" />
+            </div>
+            <h3 className="text-xl font-medium text-white mb-2">
+              Conversation Memory
+            </h3>
+            <p className="text-gray-400">
+              Ask follow-up questions and refine your queries - THEO remembers
+              context from previous interactions.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-24 text-center">
+          <div className="bg-gradient-to-r from-green-600/20 to-green-400/20 rounded-lg p-8 max-w-3xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">
+              Ready to transform how you interact with data?
+            </h2>
+            <p className="mt-4 text-gray-300">
+              Start talking to your database in plain English today.
+            </p>
+            <div className="mt-6">
+              <SignInButton>
+                <div className="inline-flex items-center bg-green-500 hover:bg-green-400 text-black font-medium px-6 py-3 rounded-md transition cursor-pointer">
+                  <Sparkles className="mr-2 h-5 w-5" /> Start Using THEO
+                </div>
+              </SignInButton>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="border-t border-gray-800 py-8 mt-24 text-center text-gray-500 text-sm">
+          <p>
+            © {new Date().getFullYear()} THEO SQL Agent. All rights reserved.
+          </p>
+          <div className="mt-2 flex justify-center space-x-6">
+            <Link href="#" className="text-gray-400 hover:text-green-500">
+              Terms
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-green-500">
+              Privacy
+            </Link>
+            <Link href="#" className="text-gray-400 hover:text-green-500">
+              Contact
+            </Link>
+          </div>
+        </footer>
+      </div>
+    </main>
   );
 }
