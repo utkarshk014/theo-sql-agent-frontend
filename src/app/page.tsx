@@ -70,6 +70,19 @@ export default function Home() {
           </div>
         </div>
 
+        {/* iframe video */}
+
+        <div className="max-w-6xl mt-10 mx-auto mb-20">
+          <div className="aspect-video bg-muted rounded-xl flex items-center justify-center">
+            <iframe
+              className="w-full h-full object-cover"
+              src="https://www.youtube.com/embed/sxI1yOXRh-M?si=zmH9bNsQFf_12kRe&rel=0&modestbranding=1&controls=1&showinfo=0&fs=1&playsinline=1&autoplay=1"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            ></iframe>
+          </div>
+        </div>
+
         {/* Features */}
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="bg-gray-800/30 rounded-lg p-6 border border-gray-700">
