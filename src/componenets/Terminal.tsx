@@ -85,7 +85,7 @@ const Terminal: React.FC = () => {
       const backendUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-      const response = await fetch(`${backendUrl}/api/connections`, {
+      const response = await fetch(`${backendUrl}/api/connections/`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ const Terminal: React.FC = () => {
       const token = await getToken();
       const backendUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const url = `${backendUrl}/api/conversations`;
+      const url = `${backendUrl}/api/conversations/`;
 
       const response = await fetch(url, {
         method: "GET",
@@ -318,7 +318,7 @@ const Terminal: React.FC = () => {
       // Call your query API
       const backendUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const response = await fetch(`${backendUrl}/api/queries`, {
+      const response = await fetch(`${backendUrl}/api/queries/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -400,7 +400,7 @@ const Terminal: React.FC = () => {
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
       // Call the API to clear conversations
-      const response = await fetch(`${backendUrl}/api/conversations/clear`, {
+      const response = await fetch(`${backendUrl}/api/conversations/clear/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -33,7 +33,7 @@ export default function TerminalPage() {
       // Make the request to your FastAPI backend
       const backendUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const response = await fetch(`${backendUrl}/api/connections`, {
+      const response = await fetch(`${backendUrl}/api/connections/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
