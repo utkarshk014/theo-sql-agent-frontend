@@ -6,6 +6,14 @@ import { useRouter } from "next/navigation";
 import Terminal from "@/componenets/Terminal";
 import DatabaseConnectionModal from "@/componenets/DatabaseConnectionModal";
 
+interface DatabaseConnection {
+  id: string;
+  name: string;
+  vector_db_url: string;
+  target_db_url: string;
+  schema_status?: string;
+}
+
 export default function TerminalPage() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
@@ -13,7 +21,8 @@ export default function TerminalPage() {
   const [showConnectionModal, setShowConnectionModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [pendingConnection, setPendingConnection] = useState(null);
+  const [pendingConnection, setPendingConnection] =
+    useState<DatabaseConnection | null>(null);
 
   useEffect(() => {
     if (isLoaded && !user) {
@@ -55,7 +64,7 @@ export default function TerminalPage() {
 
       // Check if any connection is in 'pending' or 'processing' state
       const pendingConn = connections.find(
-        (conn) =>
+        (conn: DatabaseConnection) =>
           conn.schema_status === "pending" ||
           conn.schema_status === "processing"
       );
