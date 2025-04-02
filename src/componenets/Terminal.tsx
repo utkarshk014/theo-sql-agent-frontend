@@ -439,7 +439,9 @@ const Terminal: React.FC = () => {
       {showClearChatDialog ? (
         <div className="p-4 bg-black border-t border-green-500">
           <div className="flex flex-col items-center justify-center text-green-500 text-center">
-            <p className="mb-2">You have reached the limit conversation context</p>
+            <p className="mb-2">
+              You have reached the limit conversation context
+            </p>
             <p className="mb-4">
               Please clear your conversation history to continue.
             </p>

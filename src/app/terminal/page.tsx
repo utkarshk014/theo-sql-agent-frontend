@@ -1,4 +1,3 @@
-// src/app/terminal/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -14,16 +13,17 @@ export default function TerminalPage() {
   const [showConnectionModal, setShowConnectionModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pendingConnection, setPendingConnection] = useState(null);
 
   useEffect(() => {
     if (isLoaded && !user) {
       router.push("/");
     } else if (isLoaded && user) {
-      fetchConnections();
+      checkConnections();
     }
   }, [user, isLoaded, router]);
 
-  const fetchConnections = async () => {
+  const checkConnections = async () => {
     try {
       setLoading(true);
 
@@ -43,18 +43,42 @@ export default function TerminalPage() {
         throw new Error("Failed to fetch connections");
       }
 
-      const data = await response.json();
+      const connections = await response.json();
 
-      // Show the modal if there are no connections
-      if (!data || data.length === 0) {
+      // If no connections exist, show the modal to create one
+      if (!connections || connections.length === 0) {
         setShowConnectionModal(true);
+        setPendingConnection(null);
+        setLoading(false);
+        return;
+      }
+
+      // Check if any connection is in 'pending' or 'processing' state
+      const pendingConn = connections.find(
+        (conn) =>
+          conn.schema_status === "pending" ||
+          conn.schema_status === "processing"
+      );
+
+      if (pendingConn) {
+        // Show extraction status modal for the pending connection
+        setPendingConnection(pendingConn);
+        setShowConnectionModal(true);
+      } else {
+        // All connections are either completed or failed
+        setPendingConnection(null);
+        setShowConnectionModal(false);
       }
     } catch (err) {
-      console.error("Error fetching connections:", err);
+      console.error("Error checking connections:", err);
       setError("Failed to check database connections. Please try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleConnectionSuccess = () => {
+    checkConnections();
   };
 
   if (!isLoaded || loading) {
@@ -73,7 +97,7 @@ export default function TerminalPage() {
         <div className="text-red-500 text-xl font-mono">{error}</div>
         <SignOutButton>
           <button
-            onClick={fetchConnections}
+            onClick={checkConnections}
             className="mt-4 px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600"
           >
             Try Signing in
@@ -89,7 +113,8 @@ export default function TerminalPage() {
       {showConnectionModal && (
         <DatabaseConnectionModal
           onClose={() => setShowConnectionModal(false)}
-          onSuccess={fetchConnections}
+          onSuccess={handleConnectionSuccess}
+          pendingConnection={pendingConnection}
         />
       )}
     </main>
